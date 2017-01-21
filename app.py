@@ -207,9 +207,8 @@ class SignupHandler(BaseHandler):
         self.username = self.request.arguments['username'][0]
         self.password = self.request.arguments['password'][0]
         self.email = self.request.arguments['email'][0]
-        self.adblock = self.request.arguments['adblock'][0]
 
-        User.add_user(self.db, self.username, self.password, self.email, self.adblock)
+        User.add_user(self.db, self.username, self.password, self.email)
         self.redirect("/thanks")
 
 

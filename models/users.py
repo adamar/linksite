@@ -17,10 +17,8 @@ class User(Model):
     
 
     @staticmethod
-    def add_user(db, username, password, email, adblock):
+    def add_user(db, username, password, email):
         passhash = hashlib.sha1(password).hexdigest()
-
-        adblock = torndb.MySQLdb.escape_string(adblock)
 
 
         res = db.execute("INSERT INTO users \
@@ -41,7 +39,7 @@ class User(Model):
         passhash = hashlib.sha1(password).hexdigest()
 
 
-        SQL = "SELECT user_id, adblock \
+        SQL = "SELECT user_id \
                from users where username = '{username}' \
                and password = '{password}' limit 1".format(username=username, password=passhash)
 
@@ -50,7 +48,7 @@ class User(Model):
         print res
  
         if res:
-            return res[0].user_id, res[0].adblock
+            return res[0].user_id
         else:
             return False, None
 
