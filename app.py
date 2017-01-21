@@ -16,15 +16,16 @@ import sys
 import hashlib
 import random
 
+from urlparse import urlparse
+
 from models.images import Image
 from models.awsservices import AWSServices
 from models.users import User
 
-define("config_file", default="config.cfg", help="Config File Location")
 define("mysql_host", default="127.0.0.1:3306", help="database host")
-define("mysql_database", default="pic", help="database name")
-define("mysql_user", default="none", help="database user")
-define("mysql_password", default="", help="database password")
+define("mysql_database", default="current", help="database name")
+define("mysql_user", default="root", help="database user")
+define("mysql_password", default="password", help="database password")
 define("s3_bucket", default="", help="s3 bucket for file")
 define("aws_key", default="AKIA", help="Aws key")
 define("aws_secret", default="Sdfm", help="Aws secret")
@@ -307,14 +308,22 @@ class Application(tornado.web.Application):
             )
         tornado.web.Application.__init__(self, handlers, **settings)
 
-        self.db = torndb.Connection(
-                         host=options.mysql_host, database=options.mysql_database,
-                         user=options.mysql_user, password=options.mysql_password)
+
+        if 'CLEARDB_DATABASE_URL' in os.environ.keys():
+            parsed = urlparse(os.environ['CLEARDB_DATABASE_URL'])
+            options.mysql_host = parsed.hostname
+            options.mysql_database = parsed.path.strip("/")
+            options.mysql_user = parsed.username
+            options.mysql_password = parsed.password
+
+
+        self.db = torndb.Connection(host=options.mysql_host, database=options.mysql_database,
+                                    user=options.mysql_user, password=options.mysql_password)
 
 
 if __name__ == '__main__':
     tornado.options.parse_command_line()
-    tornado.options.parse_config_file(options.config_file)
+    #tornado.options.parse_config_file(options.config_file)
     http_server = tornado.httpserver.HTTPServer(Application())
     http_server.listen(options.port)
     tornado.ioloop.IOLoop.instance().start()
