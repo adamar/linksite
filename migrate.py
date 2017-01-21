@@ -29,7 +29,6 @@ def migrate():
 
 
     POST = """
-        DROP TABLE IF EXISTS `posts`;
         CREATE TABLE `posts` (
             `post_id` INT NOT NULL AUTO_INCREMENT,
             `slug` VARCHAR(10),
@@ -42,7 +41,6 @@ def migrate():
         """
 
     POST_ITEM = """
-        DROP TABLE IF EXISTS `post_items`;
         CREATE TABLE `post_items` (
             `post_item_id` INT NOT NULL AUTO_INCREMENT,
             `post_id` INT,
@@ -54,7 +52,6 @@ def migrate():
         """
 
     USERS = """
-        DROP TABLE IF EXISTS `users`;
         CREATE TABLE `users` (
             `user_id` INT NOT NULL AUTO_INCREMENT,
             `username` VARCHAR(60),
