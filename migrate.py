@@ -28,7 +28,7 @@ def migrate():
 
 
 
-    USERS = """
+    IMAGES = """
     
 CREATE TABLE `images` (
   `image_id` INT NOT NULL AUTO_INCREMENT,
@@ -36,11 +36,35 @@ CREATE TABLE `images` (
   `image_url` VARCHAR(255),
   `title` VARCHAR(255),
   `description` TEXT,
+  `filetype` VARCHAR(6),
+  `user_id` INT,
   `timestamp` DATETIME,
   PRIMARY KEY  (`image_id`)
 );  
 """
 
+
+    USERS = """
+CREATE TABLE `users` (
+  `user_id` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(60),
+  `password` VARCHAR(60),
+  `user_email` VARCHAR(60),
+  `adblock` TEXT,
+  `enabled` INT DEFAULT 1,
+  PRIMARY KEY  (`user_id`)
+);
+"""
+
+
+
+
+
+
+
+
+
+    db.execute(IMAGES)
     db.execute(USERS)
 
 
