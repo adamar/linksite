@@ -1,0 +1,51 @@
+
+
+  {% include "header.html" %}
+
+
+
+<form class="form-horizontal" method="post" action="/login">
+<fieldset>
+
+<!-- Form Name -->
+<legend>Login</legend>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="username">Username</label>  
+  <div class="col-md-4">
+  <input id="username" name="username" required="required" type="text" placeholder="" class="form-control input-md">
+    
+  </div>
+</div>
+
+<!-- Password input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="password">Password</label>
+  <div class="col-md-4">
+    <input id="password" name="password" required="required" type="password" placeholder="" class="form-control input-md">
+    
+  </div>
+</div>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="singlebutton"></label>
+  <div class="col-md-4">
+    <button id="singlebutton" name="singlebutton" class="btn btn-primary">Login</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+
+
+
+
+  {% include "footer.html" %}
+
+
+
+
+
+
