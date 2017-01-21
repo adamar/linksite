@@ -3,6 +3,7 @@
 import torndb
 import os
 from tornado.options import define, options
+from urlparse import urlparse
 
 
 define("mysql_host", default="127.0.0.1:3306", help="database host")
