@@ -28,43 +28,47 @@ def migrate():
 
 
 
-    IMAGES = """
-    
-CREATE TABLE `images` (
-  `image_id` INT NOT NULL AUTO_INCREMENT,
-  `slug` VARCHAR(10),
-  `image_url` VARCHAR(255),
-  `title` VARCHAR(255),
-  `description` TEXT,
-  `filetype` VARCHAR(6),
-  `user_id` INT,
-  `timestamp` DATETIME,
-  PRIMARY KEY  (`image_id`)
-);  
-"""
+    POST = """
+        DROP TABLE IF EXISTS `posts`;
+        CREATE TABLE `posts` (
+            `post_id` INT NOT NULL AUTO_INCREMENT,
+            `slug` VARCHAR(10),
+            `title` VARCHAR(255),
+            `url_safe_title` VARCHAR(255),
+            `user_id` INT,
+            `timestamp` DATETIME,
+            PRIMARY KEY  (`post_id`)
+        );  
+        """
 
+    POST_ITEM = """
+        DROP TABLE IF EXISTS `post_items`;
+        CREATE TABLE `post_items` (
+            `post_item_id` INT NOT NULL AUTO_INCREMENT,
+            `post_id` INT,
+            `image_url` VARCHAR(255),
+            `description` VARCHAR(255),
+            `filetype` VARCHAR(6),
+            PRIMARY KEY  (`post_item_id`)
+        );  
+        """
 
     USERS = """
-CREATE TABLE `users` (
-  `user_id` INT NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(60),
-  `password` VARCHAR(60),
-  `user_email` VARCHAR(60),
-  `adblock` TEXT,
-  `enabled` INT DEFAULT 1,
-  PRIMARY KEY  (`user_id`)
-);
-"""
+        DROP TABLE IF EXISTS `users`;
+        CREATE TABLE `users` (
+            `user_id` INT NOT NULL AUTO_INCREMENT,
+            `username` VARCHAR(60),
+            `password` VARCHAR(60),
+            `user_email` VARCHAR(60),
+            `enabled` INT DEFAULT 1,
+            PRIMARY KEY  (`user_id`)
+        );
+        """
 
 
 
-
-
-
-
-
-
-    db.execute(IMAGES)
+    db.execute(POST)
+    db.execute(POST_ITEM)
     db.execute(USERS)
 
 
