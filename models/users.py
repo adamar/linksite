@@ -23,9 +23,9 @@ class User(Model):
 
         res = db.execute("INSERT INTO users \
                           (username, password, \
-                          user_email, adblock) \
-                          VALUES ('%s', '%s', '%s', '%s')" % 
-                          (username, passhash, email, adblock))
+                          user_email) \
+                          VALUES ('%s', '%s', '%s')" % 
+                          (username, passhash, email))
         if res:
             return True
         else:
@@ -48,8 +48,11 @@ class User(Model):
         print res
  
         if res:
+            print len(res)
+            print res
             return res[0].user_id
         else:
+            print len(res)
             return False, None
 
 

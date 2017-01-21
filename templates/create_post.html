@@ -1,0 +1,36 @@
+
+
+  {% include "header.html" %}
+
+<form class="form-horizontal" method="post" action="/signup">
+<fieldset>
+
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="username">Post Title</label>  
+  <div class="col-md-4">
+  <input id="title" name="title" type="text" required="required" placeholder="Post Title" class="form-control input-md">
+  </div>
+</div>
+
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="signup"></label>
+  <div class="col-md-4">
+    <button id="signup" name="signup" class="btn btn-primary">Signup</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+
+
+  {% include "footer.html" %}
+
+
+
+
+
+

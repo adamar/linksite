@@ -117,6 +117,35 @@ class FourOhFourHandler(BaseHandler):
         self.render("404.html", site_title=self.settings['site_title'])
 
 
+class CreatePostHandler(BaseHandler):
+    """
+    currently unused
+    """
+    def get(self):
+
+        self.render("create_post.html", site_title=self.settings['site_title'])
+
+    def post(self):
+
+        self.post_title = self.request.arguments['title'][0]
+
+        Post.create_post(self.post_title)
+
+
+
+
+class CreatePostItemsHandler(BaseHandler):
+    """
+    currently unused
+    """
+    def get(self, slug):
+
+        self.render("create_post_items.html", site_title=self.settings['site_title'])
+
+
+
+
+
 class ImageUploadHandler(BaseHandler):
     """
     currently unused
@@ -186,7 +215,7 @@ class LoginHandler(BaseHandler):
         self.username = self.request.arguments['username'][0]
         self.password = self.request.arguments['password'][0]
 
-        uid, adblock =  User.check_user(self.db, self.username, self.password)
+        uid = User.check_user(self.db, self.username, self.password)
         if uid:
             self.set_secure_cookie("user", tornado.escape.json_encode(self.username))
             self.set_secure_cookie("user_id", tornado.escape.json_encode(uid))
@@ -291,6 +320,8 @@ class Application(tornado.web.Application):
             (r'/home', HomeHandler),
             (r'/notchecked', AdNotEnabledHandler),
             (r'/thanks', ThanksHandler),
+            (r'/createpost', CreatePostHandler),
+            (r'/createpostitems/([^/]+)', CreatePostItemsHandler),
             #(r'/([^/]+)', PicHandler),
             (r'/([a-z0-9]+)(?:/[0-9a-zA-Z_-]+|/)?', PicHandler),
             ] 

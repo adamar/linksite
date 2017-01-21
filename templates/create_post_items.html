@@ -1,0 +1,51 @@
+
+
+  {% include "header.html" %}
+
+<form class="form-horizontal" method="post" action="/signup">
+<fieldset>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Text Input</label>  
+  <div class="col-md-4">
+  <input id="textinput" name="textinput" type="text" placeholder="placeholder" class="form-control input-md">
+  <span class="help-block">help</span>  
+  </div>
+</div>
+
+<!-- File Button --> 
+<div class="form-group">
+  <label class="col-md-4 control-label" for="filebutton">File Button</label>
+  <div class="col-md-4">
+    <input id="filebutton" name="filebutton" class="input-file" type="file">
+  </div>
+</div>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="signup"></label>
+  <div class="col-md-4">
+    <button id="signup" name="signup" class="btn btn-primary">Add</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="add"></label>
+  <div class="col-md-4">
+    <button id="add" name="add" class="btn btn-success">+</button>
+  </div>
+</div>
+
+  {% include "footer.html" %}
+
+
+
+
+
+
