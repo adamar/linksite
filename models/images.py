@@ -77,11 +77,6 @@ class Image(Model):
 
 
 
-
-
-
-
-
     @staticmethod
     def get_image_and_adblock(db, item_id):
 

@@ -3,26 +3,42 @@
   {% include "header.html" %}
 
 
+<div class="list-group" style="margin-top: 50px;">
   {% for item in items %}
 
-    {{ item.description }}
+  <a href="#" class="list-group-item active">
+      <h4 class="list-group-item-heading">{{ item.description }} - <span class="glyphicon glyphicon-picture" aria-hidden="true"></h4>
+    <p class="list-group-item-text">Image Post</p>
+  </a>
+
+  <br />
 
   {% end %}
+ 
+</div>
+
+<script type="text/javascript">
+
+    function showDiv() {
+           document.getElementById('formdiv').style.display = "block";
+           document.getElementById('buttons').style.display = "none";
+    }
+
+</script>
 
 
 
 
-
-
+<div id="formdiv" style="display:none;">
 <form action="" method="post" enctype="multipart/form-data" id="form2" class="form-horizontal">
 
 <fieldset>
 
 <!-- Text input-->
 <div class="form-group">
-  <label class="col-md-4 control-label" for="textinput">Text Input</label>  
+  <label class="col-md-4 control-label" for="textinput">Description</label>  
   <div class="col-md-4">
-  <input id="textinput" name="textinput" type="text" placeholder="placeholder" class="form-control input-md">
+  <input id="description" name="description" type="text" placeholder="Description" class="form-control input-md">
   <span class="help-block">help</span>  
   </div>
 </div>
@@ -39,15 +55,21 @@
 <div class="form-group">
   <label class="col-md-4 control-label" for="signup"></label>
   <div class="col-md-4">
-    <button id="signup" name="signup" class="btn btn-primary">Add Another Item</button>
-    <button id="add" name="add" class="btn btn-success">Finish</button>
-    
+     <button id="publish" name="publish" class="btn btn-success">Save</button>
   </div>
 </div>
 
 </fieldset>
 </form>
+</div>
 
+
+    <div id="buttons"> 
+    <button id="add" name="add" class="btn btn-primary" onclick="showDiv()">Add Another Item</button>
+    <a href="/" class="btn btn-success" role="button">Finish</a>
+    </div>
+
+    <div style="margin-top: 50px;"></div>
 
   {% include "footer.html" %}
 

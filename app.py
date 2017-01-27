@@ -165,10 +165,11 @@ class CreatePostItemsHandler(BaseHandler):
 
             file_contents = key['body']
             content_type = key['content_type']
-            print content_type
+            #print content_type
 
         image_url = "http://s3.amazonaws/pics/pic.gif"
-        description = "Amazin Pic"
+        #description = "Amazin Pic"
+        description = self.request.arguments['description'][0]
 
         Image.set_post_item(self.db, slug, description, image_url)
 
