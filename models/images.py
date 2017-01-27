@@ -23,55 +23,63 @@ from time import  strftime, gmtime
 class Image(Model):
 
     @staticmethod
-    def generate_image_name(unique_file_name_component, filetype):
-        return unique_file_name_component + '.' + filetype
+    def set_post(db, description, user_id):
 
+        desc = torndb.MySQLdb.escape_string(str(description))
 
-    @staticmethod
-    def readble_url(title):
-        title = title.replace(" ","_")
-        title = title.replace("-","_")
-        acceptable_chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_'
-        return "".join([ch for ch in title if ch in acceptable_chars])
-
-
-    @staticmethod
-    def generate_orignal_image_url(s3_bucket, filename):
-        return 'http://s3.amazonaws.com/{bucket}/{filename}'.format(bucket=s3_bucket, filename=filename)
-
-    @staticmethod
-    def upload_to_s3(image, filename, content_type):
-        conn = S3Connection('','')
-        bucket = conn.create_bucket('buket_name')
-        k = Key(bucket)
-        k.key = filename
-        k.set_metadata("Content-Type", content_type)
-        k.set_contents_from_string(image)
-        k.set_acl('public-read')
-        return
-
-    @staticmethod
-    def get_most_recent(db, dcount):
-
-        dcount = torndb.MySQLdb.escape_string(str(dcount))
-
-        SQL = "SELECT slug, title from images order by image_id desc limit {count}".format(count=dcount)
-        res = db.query(SQL)
-        return res
-
-
-    @staticmethod
-    def get_image(db, item_id):
-
-        item_id = torndb.MySQLdb.escape_string(str(item_id))
-
-        SQL = "SELECT image_url, title, description from images where slug='{item_id}'".format(item_id=item_id)
+        SQL = "INSERT INTO posts (title, user_id) \
+               VALUES ('{desc}', {uid})".format(desc=desc, uid=user_id)
 
         print SQL
+        res = db.execute(SQL)
+        return True
+
+
+
+
+    @staticmethod
+    def get_post_items(db, post_id):
+
+        post_id = torndb.MySQLdb.escape_string(str(post_id))
+
+        SQL = "SELECT description from post_items where post_id='{post_id}'".format(post_id=post_id)
+
+        #print SQL
         res = db.query(SQL)
 
-        print res
+        #print res
         return res
+
+
+    @staticmethod
+    def set_post_item(db, slug, title, url):
+
+        post_id = torndb.MySQLdb.escape_string(str(slug))
+
+        SQL = "INSERT INTO post_items (post_id, description, image_url) \
+               VALUES ('{post_id}', '{title}', '{url}')".format(post_id=post_id, title=title, url=url)
+
+        print SQL
+        res = db.execute(SQL)
+        return True
+
+
+
+        #SQL = "SELECT description from post_items where post_id='{post_id}'".format(post_id=post_id)
+
+        #print SQL
+        #res = db.query(SQL)
+
+        #print res
+        #return res
+
+
+
+
+
+
+
+
 
 
     @staticmethod
@@ -107,6 +115,10 @@ class Image(Model):
         res = db.execute(SQL)
         return True
 
+
+
+
+
     @staticmethod
     def check_unique_image(image_body):
 
@@ -126,6 +138,43 @@ class Image(Model):
         else:
             return False
 
+
+    @staticmethod
+    def generate_image_name(unique_file_name_component, filetype):
+        return unique_file_name_component + '.' + filetype
+
+
+    @staticmethod
+    def readble_url(title):
+        title = title.replace(" ","_")
+        title = title.replace("-","_")
+        acceptable_chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_'
+        return "".join([ch for ch in title if ch in acceptable_chars])
+
+
+    @staticmethod
+    def generate_orignal_image_url(s3_bucket, filename):
+        return 'http://s3.amazonaws.com/{bucket}/{filename}'.format(bucket=s3_bucket, filename=filename)
+
+    @staticmethod
+    def upload_to_s3(image, filename, content_type):
+        conn = S3Connection('','')
+        bucket = conn.create_bucket('buket_name')
+        k = Key(bucket)
+        k.key = filename
+        k.set_metadata("Content-Type", content_type)
+        k.set_contents_from_string(image)
+        k.set_acl('public-read')
+        return
+
+    @staticmethod
+    def get_most_recent(db, dcount):
+
+        dcount = torndb.MySQLdb.escape_string(str(dcount))
+
+        SQL = "SELECT slug, title from images order by image_id desc limit {count}".format(count=dcount)
+        res = db.query(SQL)
+        return res
 
 
 

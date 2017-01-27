@@ -1,4 +1,4 @@
-#!/usr/bin/python
+
 
 import tornado.httpserver
 import tornado.web
@@ -111,7 +111,7 @@ class RecentHandler(BaseHandler):
 
 class FourOhFourHandler(BaseHandler):
     """
-    /404
+
     """
     def get(self):
         self.render("404.html", site_title=self.settings['site_title'])
@@ -127,11 +127,21 @@ class CreatePostHandler(BaseHandler):
 
     def post(self):
 
+        #print self.get_secure_cookie("user_id")
+        user_id = int(tornado.escape.json_decode(self.get_secure_cookie("user_id")))
         self.post_title = self.request.arguments['title'][0]
 
-        Post.create_post(self.post_title)
+        #print user_id
+        #print self.post_title
 
+        res = Image.set_post(self.db, self.post_title, user_id)
 
+        #print res
+
+        if res == True:
+            self.redirect("/createpostitems/"+"1")
+        else:
+            print "Error"
 
 
 class CreatePostItemsHandler(BaseHandler):
@@ -140,8 +150,29 @@ class CreatePostItemsHandler(BaseHandler):
     """
     def get(self, slug):
 
-        self.render("create_post_items.html", site_title=self.settings['site_title'])
+        items = Image.get_post_items(self.db, slug)
+        print items
 
+        self.render("create_post_items.html", site_title=self.settings['site_title'], items=items)
+
+
+    def post(self, slug):
+
+        for key in self.request.files:
+            print key
+
+        for key in self.request.files['filebutton[]']:
+
+            file_contents = key['body']
+            content_type = key['content_type']
+            print content_type
+
+        image_url = "http://s3.amazonaws/pics/pic.gif"
+        description = "Amazin Pic"
+
+        Image.set_post_item(self.db, slug, description, image_url)
+
+        self.redirect("/createpostitems/"+"1")
 
 
 
@@ -216,6 +247,7 @@ class LoginHandler(BaseHandler):
         self.password = self.request.arguments['password'][0]
 
         uid = User.check_user(self.db, self.username, self.password)
+        print uid
         if uid:
             self.set_secure_cookie("user", tornado.escape.json_encode(self.username))
             self.set_secure_cookie("user_id", tornado.escape.json_encode(uid))
