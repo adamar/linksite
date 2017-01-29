@@ -1,0 +1,51 @@
+
+
+  {% include "header.html" %}
+
+<form class="form-horizontal" method="post" action="/signup">
+<fieldset>
+
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="username">Username</label>  
+  <div class="col-md-4">
+  <input id="username" name="username" type="text" required="required" placeholder="username" class="form-control input-md">
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="username">Password</label>  
+  <div class="col-md-4">
+  <input id="password" name="password" type="text" required="required" placeholder="super secret password" class="form-control input-md">
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="user_email">Email Address</label>  
+  <div class="col-md-4">
+  <input id="email" name="email" type="text" required="required" placeholder="you@email.com" class="form-control input-md">
+  </div>
+</div>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="signup"></label>
+  <div class="col-md-4">
+    <button id="signup" name="signup" class="btn btn-primary">Signup</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+
+
+  {% include "footer.html" %}
+
+
+
+
+
+

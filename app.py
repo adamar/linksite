@@ -258,12 +258,29 @@ class LoginHandler(BaseHandler):
             self.redirect("/login")
 
 
+class FaqHandler(BaseHandler):
+    """
+    /faq
+    """
+    def get(self):
+        self.render("faq.html", site_title=self.settings['site_title'])
+
+
+
 class SignupHandler(BaseHandler):
     """
     /signup
     """
     def get(self):
         self.render("signup.html", site_title=self.settings['site_title'])
+
+
+class SignupFormHandler(BaseHandler):
+    """
+    /signup-form
+    """
+    def get(self):
+        self.render("signup-form.html", site_title=self.settings['site_title'])
 
     def post(self):
         self.username = self.request.arguments['username'][0]
@@ -279,17 +296,17 @@ class HomeHandler(BaseHandler):
     """
     /home
     """
-    @tornado.web.authenticated
+    #@tornado.web.authenticated
     def get(self):
         
-        uname = self.get_secure_cookie("user")
+        #uname = self.get_secure_cookie("user")
 
-        enabled = User.check_users_ad_enabled(self.db, uname)
+        #enabled = User.check_users_ad_enabled(self.db, uname)
 
-        if enabled:
-            self.render("auth_upload.html", site_title=self.settings['site_title'])
-        else:
-            self.redirect("/notchecked")
+        #if enabled:
+        self.render("home.html", site_title=self.settings['site_title'])
+        #else:
+        #    self.redirect("/notchecked")
 
 
     @tornado.web.authenticated
@@ -350,9 +367,11 @@ class Application(tornado.web.Application):
             (r'/404', FourOhFourHandler),
             (r'/login', LoginHandler),
             (r'/signup', SignupHandler),
+            (r'/signup-form', SignupFormHandler),
             (r'/home', HomeHandler),
             (r'/notchecked', AdNotEnabledHandler),
             (r'/thanks', ThanksHandler),
+            (r'/faq', FaqHandler),
             (r'/createpost', CreatePostHandler),
             (r'/createpostitems/([^/]+)', CreatePostItemsHandler),
             #(r'/([^/]+)', PicHandler),
