@@ -115,6 +115,7 @@ class CreatePostHandler(BaseHandler):
         #print self.post_title
 
         res = Image.set_post(self.db, self.post_title, user_id)
+        print res
 
         #print res
 
@@ -358,14 +359,14 @@ class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
             #(r'/upload', ImageUploadHandler), 
-            (r'/recent', RecentHandler),
+            #(r'/recent', RecentHandler),
             (r'/', MainPageHandler),
             (r'/404', FourOhFourHandler),
             (r'/login', LoginHandler),
             (r'/signup', SignupHandler),
             (r'/signup-form', SignupFormHandler),
             (r'/home', HomeHandler),
-            (r'/notchecked', AdNotEnabledHandler),
+            #(r'/notchecked', AdNotEnabledHandler),
             (r'/thanks', ThanksHandler),
             (r'/faq', FaqHandler),
             (r'/createpost', CreatePostHandler),
