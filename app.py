@@ -391,6 +391,14 @@ class Application(tornado.web.Application):
         tornado.web.Application.__init__(self, handlers, **settings)
 
 
+        if 'AWS_ACCESS_KEY_ID' in os.environ.keys():
+            options.aws_key = os.environ['AWS_ACCESS_KEY_ID']
+
+        if 'AWS_SECRET_ACCESS_KEY' in os.environ.keys():
+            options.aws_secret = os.environ['AWS_SECRET_ACCESS_KEY']
+
+
+
         if 'CLEARDB_DATABASE_URL' in os.environ.keys():
             parsed = urlparse(os.environ['CLEARDB_DATABASE_URL'])
             options.mysql_host = parsed.hostname
