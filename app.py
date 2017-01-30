@@ -158,19 +158,31 @@ class CreatePostItemsHandler(BaseHandler):
 
     def post(self, slug):
 
-        for key in self.request.files:
-            print key
+        #for key in self.request.files:
+        #    print key
 
         for key in self.request.files['filebutton[]']:
 
+            ## Capture the files details
             file_contents = key['body']
             content_type = key['content_type']
-            #print content_type
 
-        image_url = "http://s3.amazonaws/pics/pic.gif"
-        #description = "Amazin Pic"
+            ## Upload the file in the form
+            AWSServices.upload_to_s3(options.aws_key, options.aws_secret, options.s3_bucket, file_contents, "file.png", content_type)
+
+            ## Generate an S3 URL for the uploaded file
+            image_url = generate_orignal_image_url(options.s3_bucket, filename)
+
+
+        ## Get the file description from the form
         description = self.request.arguments['description'][0]
+        urlified_description = Image.string_to_readble_url_snippet(description)
 
+        print description
+        print urlified_description
+
+        ## Insert the file details of the newly uploaded file
+        ## into the database
         Image.set_post_item(self.db, slug, description, image_url)
 
         self.redirect("/createpostitems/"+"1")
@@ -397,6 +409,8 @@ class Application(tornado.web.Application):
         if 'AWS_SECRET_ACCESS_KEY' in os.environ.keys():
             options.aws_secret = os.environ['AWS_SECRET_ACCESS_KEY']
 
+        if 'S3_BUCKET' in os.environ.keys():
+            options.s3_bucket = os.environ['S3_BUCKET']
 
 
         if 'CLEARDB_DATABASE_URL' in os.environ.keys():

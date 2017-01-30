@@ -112,15 +112,12 @@ class Image(Model):
 
 
 
-
-
     @staticmethod
     def check_unique_image(image_body):
 
         m = hashlib.md5()
         m.update(image_body)
         return m.hexdigest()[:8]
-
 
 
 
@@ -140,7 +137,7 @@ class Image(Model):
 
 
     @staticmethod
-    def readble_url(title):
+    def string_to_readble_url_snippet(title):
         title = title.replace(" ","_")
         title = title.replace("-","_")
         acceptable_chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_'
@@ -151,16 +148,7 @@ class Image(Model):
     def generate_orignal_image_url(s3_bucket, filename):
         return 'http://s3.amazonaws.com/{bucket}/{filename}'.format(bucket=s3_bucket, filename=filename)
 
-    @staticmethod
-    def upload_to_s3(image, filename, content_type):
-        conn = S3Connection('','')
-        bucket = conn.create_bucket('buket_name')
-        k = Key(bucket)
-        k.key = filename
-        k.set_metadata("Content-Type", content_type)
-        k.set_contents_from_string(image)
-        k.set_acl('public-read')
-        return
+
 
     @staticmethod
     def get_most_recent(db, dcount):
