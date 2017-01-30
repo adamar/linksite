@@ -80,13 +80,6 @@ class MainPageHandler(BaseHandler):
         self.render("index.html", site_title=self.settings['site_title'])
 
 
-class AdNotEnabledHandler(BaseHandler):
-    """
-    /notchecked
-    """
-    def get(self):
-        self.render("notchecked.html", site_title=self.settings['site_title'])
-
 
 class ThanksHandler(BaseHandler):
     """
@@ -94,19 +87,6 @@ class ThanksHandler(BaseHandler):
     """
     def get(self):
         self.render("thanksforsignup.html", site_title=self.settings['site_title'])
-
-
-
-class RecentHandler(BaseHandler):
-    """
-    /recent
-    """
-    @tornado.web.authenticated
-    def get(self):
-        count = 10
-        imglist = Image.get_most_recent(self.db, count)
-        self.render("recent.html", imglist=imglist, site_title=self.settings['site_title'])
-
 
 
 class FourOhFourHandler(BaseHandler):
@@ -166,12 +146,16 @@ class CreatePostItemsHandler(BaseHandler):
             ## Capture the files details
             file_contents = key['body']
             content_type = key['content_type']
+            file_name = key['filename']
+
+            ## Check filetype matches whats allowed
+            filetype = Image.check_image_type(file_contents)
 
             ## Upload the file in the form
-            AWSServices.upload_to_s3(options.aws_key, options.aws_secret, options.s3_bucket, file_contents, "file.png", content_type)
+            AWSServices.upload_to_s3(options.aws_key, options.aws_secret, options.s3_bucket, file_contents, file_name, content_type)
 
             ## Generate an S3 URL for the uploaded file
-            image_url = generate_orignal_image_url(options.s3_bucket, filename)
+            image_url = generate_orignal_image_url(options.s3_bucket, file_name)
 
 
         ## Get the file description from the form
