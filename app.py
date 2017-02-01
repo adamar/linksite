@@ -328,14 +328,11 @@ class HomeHandler(BaseHandler):
     def get(self):
         
         uname = self.get_secure_cookie("user")
-        print uname
+        uid = self.get_secure_cookie("user_id")
+ 
+        posts = User.get_user_posts(self.db, uid)
 
-        #enabled = User.check_users_ad_enabled(self.db, uname)
-
-        #if enabled:
-        self.render("home.html", site_title=self.settings['site_title'], username=uname)
-        #else:
-        #    self.redirect("/notchecked")
+        self.render("home.html", site_title=self.settings['site_title'], username=uname, posts=posts)
 
 
     @tornado.web.authenticated

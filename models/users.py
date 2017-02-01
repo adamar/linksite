@@ -60,6 +60,20 @@ class User(Model):
             return False, {}
 
 
+
+
+    @staticmethod
+    def get_user_posts(db, user_id):
+
+        SQL = "select title from posts where user_id = {uid}".format(uid=user_id)
+
+        res = db.query(SQL)
+
+        return res
+
+
+
+
     @staticmethod
     def check_users_ad_enabled(db, username):
 
