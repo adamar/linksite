@@ -85,6 +85,7 @@ class ThanksHandler(BaseHandler):
     """
     /thanks
     """
+    @tornado.web.authenticated
     def get(self):
         self.render("thanksforsignup.html", site_title=self.settings['site_title'])
 
@@ -101,10 +102,13 @@ class CreatePostHandler(BaseHandler):
     """
     currently unused
     """
+    @tornado.web.authenticated
     def get(self):
 
         self.render("create_post.html", site_title=self.settings['site_title'])
 
+
+    @tornado.web.authenticated
     def post(self):
 
         #print self.get_secure_cookie("user_id")
@@ -126,6 +130,7 @@ class CreatePostItemsHandler(BaseHandler):
     """
     currently unused
     """
+    @tornado.web.authenticated
     def get(self, slug):
 
         items = Image.get_post_items(self.db, slug)
@@ -134,6 +139,7 @@ class CreatePostItemsHandler(BaseHandler):
         self.render("create_post_items.html", site_title=self.settings['site_title'], items=items)
 
 
+    @tornado.web.authenticated
     def post(self, slug):
 
         #for key in self.request.files:
@@ -176,6 +182,7 @@ class ImageUploadHandler(BaseHandler):
     """
     currently unused
     """
+    @tornado.web.authenticated
     def get(self):
 
         #images = Image.get_item_images(self.db, slug)
@@ -185,6 +192,8 @@ class ImageUploadHandler(BaseHandler):
         #    err = self.get_error(err)
         self.render("upload.html", site_title=self.settings['site_title'])
 
+
+    @tornado.web.authenticated
     def post(self):
         for key in self.request.files['userfile[]']:
 
@@ -252,6 +261,22 @@ class LoginHandler(BaseHandler):
             self.redirect("/login")
 
 
+class LogoutHandler(BaseHandler):
+    """
+    /logout
+    """
+    def get(self):
+
+        self.clear_cookie("user")
+        self.clear_cookie("user_id")
+
+        self.redirect("/")
+
+
+
+
+
+
 class FaqHandler(BaseHandler):
     """
     /faq
@@ -290,7 +315,7 @@ class HomeHandler(BaseHandler):
     """
     /home
     """
-    #@tornado.web.authenticated
+    @tornado.web.authenticated
     def get(self):
         
         #uname = self.get_secure_cookie("user")
@@ -360,6 +385,7 @@ class Application(tornado.web.Application):
             (r'/', MainPageHandler),
             (r'/404', FourOhFourHandler),
             (r'/login', LoginHandler),
+            (r'/logout', LogoutHandler),
             (r'/signup', SignupHandler),
             (r'/signup-form', SignupFormHandler),
             (r'/home', HomeHandler),
@@ -377,6 +403,7 @@ class Application(tornado.web.Application):
             site_title=u"pic",
             cookie_secret="12oETzKXQAGaYdk9h2x9ff398g7np2XdTP1o/Vo=",
             login_url="/login",
+            xsrf_cookies=False,
             template_path=os.path.join(os.path.dirname(__file__), "templates"),
             debug=options.debug,
             default_handler_class=FourOhFourHandler,
