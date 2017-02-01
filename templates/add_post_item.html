@@ -1,0 +1,50 @@
+
+
+  {% include "header.html" %}
+
+
+
+<div id="formdiv" style="display:none;">
+<form action="" method="post" enctype="multipart/form-data" id="form2" class="form-horizontal">
+
+<fieldset>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Description</label>  
+  <div class="col-md-4">
+  <input id="description" name="description" type="text" placeholder="Description" class="form-control input-md">
+  <span class="help-block">help</span>  
+  </div>
+</div>
+
+<!-- File Button --> 
+<div class="form-group">
+  <label class="col-md-4 control-label" for="filebutton">File Button</label>
+  <div class="col-md-4">
+    <input id="filebutton" name="filebutton[]" class="input-file" type="file">
+  </div>
+</div>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="signup"></label>
+  <div class="col-md-4">
+     <button id="publish" name="publish" class="btn btn-success">Save</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+</div>
+
+
+    <div style="margin-top: 50px;"></div>
+
+  {% include "footer.html" %}
+
+
+
+
+
+
