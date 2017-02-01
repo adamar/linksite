@@ -115,13 +115,9 @@ class CreatePostHandler(BaseHandler):
         #print self.post_title
 
         res = Image.set_post(self.db, self.post_title, user_id)
-        print "Set Post Results"
-        print res
 
-        #print res
-
-        if res == True:
-            self.redirect("/createpostitems/"+"1")
+        if res:
+            self.redirect("/createpostitems/"+str(res))
         else:
             print "Error"
 

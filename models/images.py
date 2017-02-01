@@ -30,11 +30,12 @@ class Image(Model):
         SQL = "INSERT INTO posts (title, user_id) \
                VALUES ('{desc}', {uid})".format(desc=desc, uid=user_id)
 
-        print SQL
-        res = db.execute(SQL)
-        return True
+        res = db.execute_lastrowid(SQL)
+        print res
+        return res
 
 
+    
 
 
     @staticmethod
