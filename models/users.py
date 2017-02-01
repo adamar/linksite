@@ -21,11 +21,18 @@ class User(Model):
         passhash = hashlib.sha1(password).hexdigest()
 
 
-        res = db.execute("INSERT INTO users \
+        SQL = "INSERT INTO users \
                           (username, password, \
                           user_email) \
-                          VALUES ('%s', '%s', '%s')" % 
-                          (username, passhash, email))
+                          VALUES ('%s', '%s', '%s')" % (username, passhash, email)
+
+
+
+        res = db.execute_lastrowid(SQL)
+
+        print SQL, " and result: ", res
+
+
         if res:
             return True
         else:
@@ -39,21 +46,18 @@ class User(Model):
         passhash = hashlib.sha1(password).hexdigest()
 
 
-        SQL = "SELECT user_id \
+        SQL = "SELECT user_id, username \
                from users where username = '{username}' \
                and password = '{password}' limit 1".format(username=username, password=passhash)
 
-        print SQL
         res = db.query(SQL)
-        print res
- 
+        print SQL, "  Results: ", res
+
         if res:
-            print len(res)
-            print res
-            return res[0].user_id
+            return True, res[0]
         else:
-            print len(res)
-            return False, None
+            print "user not found, result: ", res
+            return False, {}
 
 
     @staticmethod

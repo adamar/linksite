@@ -250,11 +250,18 @@ class LoginHandler(BaseHandler):
         self.username = self.request.arguments['username'][0]
         self.password = self.request.arguments['password'][0]
 
-        uid = User.check_user(self.db, self.username, self.password)
-        print uid
-        if uid:
-            self.set_secure_cookie("user", tornado.escape.json_encode(self.username))
-            self.set_secure_cookie("user_id", tornado.escape.json_encode(uid))
+        exists, user = User.check_user(self.db, self.username, self.password)
+
+        print "check user results : ", user
+
+        if exists:
+            self.set_secure_cookie("user", tornado.escape.json_encode(user['username']))
+            self.set_secure_cookie("user_id", tornado.escape.json_encode(user['user_id']))
+
+
+            print self.get_secure_cookie("user")
+            print self.get_secure_cookie("user_id")
+
             self.redirect("/home")
             
         else:
@@ -306,6 +313,8 @@ class SignupFormHandler(BaseHandler):
         self.password = self.request.arguments['password'][0]
         self.email = self.request.arguments['email'][0]
 
+        print "Form contents from signup page: ", self.username, self.password, self.email
+
         User.add_user(self.db, self.username, self.password, self.email)
         self.redirect("/thanks")
 
@@ -318,12 +327,13 @@ class HomeHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         
-        #uname = self.get_secure_cookie("user")
+        uname = self.get_secure_cookie("user")
+        print uname
 
         #enabled = User.check_users_ad_enabled(self.db, uname)
 
         #if enabled:
-        self.render("home.html", site_title=self.settings['site_title'])
+        self.render("home.html", site_title=self.settings['site_title'], username=uname)
         #else:
         #    self.redirect("/notchecked")
 
@@ -392,7 +402,7 @@ class Application(tornado.web.Application):
             #(r'/notchecked', AdNotEnabledHandler),
             (r'/thanks', ThanksHandler),
             (r'/faq', FaqHandler),
-            (r'/createpost', CreatePostHandler),
+            (r'/create_post', CreatePostHandler),
             (r'/createpostitems/([^/]+)', CreatePostItemsHandler),
             #(r'/([^/]+)', PicHandler),
             (r'/([a-z0-9]+)(?:/[0-9a-zA-Z_-]+|/)?', PicHandler),
