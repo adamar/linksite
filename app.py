@@ -139,6 +139,17 @@ class CreatePostItemsHandler(BaseHandler):
         self.render("create_post_items.html", site_title=self.settings['site_title'], items=items)
 
 
+
+class AddPostItemHandler(BaseHandler):
+    """
+    /addpostitem/
+    """
+    @tornado.web.authenticated
+    def get(self):
+
+        self.render("add_post_items.html", site_title=self.settings['site_title'])
+
+
     @tornado.web.authenticated
     def post(self, slug):
 
@@ -401,6 +412,7 @@ class Application(tornado.web.Application):
             (r'/faq', FaqHandler),
             (r'/create_post', CreatePostHandler),
             (r'/createpostitems/([^/]+)', CreatePostItemsHandler),
+            (r'/addpostitem/([/]+)', AddPostItemHandler),
             #(r'/([^/]+)', PicHandler),
             (r'/([a-z0-9]+)(?:/[0-9a-zA-Z_-]+|/)?', PicHandler),
             ] 
