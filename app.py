@@ -172,7 +172,7 @@ class AddPostItemHandler(BaseHandler):
             AWSServices.upload_to_s3(options.aws_key, options.aws_secret, options.s3_bucket, file_contents, file_name, content_type)
 
             ## Generate an S3 URL for the uploaded file
-            image_url = generate_orignal_image_url(options.s3_bucket, file_name)
+            image_url = Image.generate_orignal_image_url(options.s3_bucket, file_name)
 
 
         ## Get the file description from the form

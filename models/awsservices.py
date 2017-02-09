@@ -32,7 +32,8 @@ class AWSServices(Model):
     @staticmethod
     def upload_to_s3(key, secret, bucket, image, filename, content_type):
         conn = S3Connection(key, secret)
-        bucket = conn.create_bucket(bucket)
+        #bucket = conn.create_bucket(bucket)
+        bucket = conn.get_bucket(bucket)
         k = Key(bucket)
         k.key = filename
         k.set_metadata("Content-Type", content_type)
