@@ -136,7 +136,7 @@ class CreatePostItemsHandler(BaseHandler):
         items = Image.get_post_items(self.db, slug)
         print items
 
-        self.render("create_post_items.html", site_title=self.settings['site_title'], items=items)
+        self.render("create_post_items.html", site_title=self.settings['site_title'], items=items, post_id=slug)
 
 
 
@@ -145,9 +145,11 @@ class AddPostItemHandler(BaseHandler):
     /addpostitem/
     """
     @tornado.web.authenticated
-    def get(self):
+    def get(self, slug):
 
-        self.render("add_post_items.html", site_title=self.settings['site_title'])
+        print slug
+
+        self.render("add_post_item.html", site_title=self.settings['site_title'])
 
 
     @tornado.web.authenticated
@@ -412,9 +414,9 @@ class Application(tornado.web.Application):
             (r'/faq', FaqHandler),
             (r'/create_post', CreatePostHandler),
             (r'/createpostitems/([^/]+)', CreatePostItemsHandler),
-            (r'/addpostitem/([/]+)', AddPostItemHandler),
+            (r'/addpostitem/([^/]+)', AddPostItemHandler),
             #(r'/([^/]+)', PicHandler),
-            (r'/([a-z0-9]+)(?:/[0-9a-zA-Z_-]+|/)?', PicHandler),
+            #(r'/([a-z0-9]+)(?:/[0-9a-zA-Z_-]+|/)?', PicHandler),
             ] 
 
 
