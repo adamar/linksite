@@ -1,0 +1,23 @@
+
+
+  {% include "header.html" %}
+
+
+
+  <h1 class="cover-heading">{{ post_items[0].title }}</h1>
+
+            {% for item in post_items %}
+
+                <h3>{{ item.description }}</h3>
+                <img src="{{ item.image_url }}"></img>
+
+
+            {% end %}
+
+  {% include "footer.html" %}
+
+
+
+
+
+

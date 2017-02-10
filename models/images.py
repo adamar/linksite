@@ -23,15 +23,24 @@ from time import  strftime, gmtime
 class Image(Model):
 
     @staticmethod
-    def set_post(db, description, user_id):
+    def set_post(db, description, safe_description, user_id):
 
-        desc = torndb.MySQLdb.escape_string(str(description))
+        desc = torndb.MySQLdb.escape_string(description)
+        safe_desc = torndb.MySQLdb.escape_string(safe_description)
 
-        SQL = "INSERT INTO posts (title, user_id) \
-               VALUES ('{desc}', {uid})".format(desc=desc, uid=user_id)
+        SQL = "INSERT INTO posts (title, url_safe_title, user_id) \
+               VALUES ('{desc}', '{safe_title}',  {uid})".format(desc=desc, safe_title=safe_desc, uid=user_id)
 
         res = db.execute_lastrowid(SQL)
-        print res
+
+        hexval = hex(res).rstrip('L')
+
+        SQL2 = "UPDATE posts set slug = '{slug}' where post_id = '{pid}'".format(slug=hexval, pid=res)
+
+        print SQL2
+
+        db.execute(SQL2)
+
         return res
 
 
@@ -79,12 +88,15 @@ class Image(Model):
 
 
     @staticmethod
-    def get_image_and_adblock(db, item_id):
+    def get_post(db, hex_id):
 
-        item_id = torndb.MySQLdb.escape_string(str(item_id))
+        hex_id = torndb.MySQLdb.escape_string(hex_id)
 
-        SQL = "select i.image_url, i.title, u.adblock, u.enabled from images i join users \
-               u on (i.user_id = u.user_id) where i.slug = '{item_id}'".format(item_id=item_id)
+        item_id = int(hex_id, 16)
+
+        SQL = "select p.title, pi.description, pi.image_url from posts p \
+               join post_items pi on (pi.post_id = p.post_id) \
+               where p.post_id = {item_id};".format(item_id=item_id)
 
         print SQL
         res = db.query(SQL)
@@ -147,7 +159,8 @@ class Image(Model):
 
     @staticmethod
     def generate_orignal_image_url(s3_bucket, filename):
-        return 'http://s3.amazonaws.com/{bucket}/{filename}'.format(bucket=s3_bucket, filename=filename)
+        #return 'http://s3.amazonaws.com/{bucket}/{filename}'.format(bucket=s3_bucket, filename=filename)
+        return 'http://{bucket}.s3-website-us-west-1.amazonaws.com/{filename}'.format(bucket=s3_bucket, filename=filename)
 
 
 
@@ -161,5 +174,15 @@ class Image(Model):
         return res
 
 
+
+    @staticmethod
+    def int_to_hex(num):
+        return hex(num)
+
+
+
+    @staticmethod
+    def hex_to_int(num):
+        return int(num, 16)
 
 

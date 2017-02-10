@@ -36,7 +36,8 @@ def migrate():
             `url_safe_title` VARCHAR(255),
             `user_id` INT,
             `timestamp` DATETIME,
-            PRIMARY KEY  (`post_id`)
+            PRIMARY KEY  (`post_id`),
+            AUTO_INCREMENT = 1000
         );  
         """
 

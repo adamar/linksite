@@ -54,22 +54,21 @@ class PicHandler(BaseHandler):
     """
     main image page /{something}
     """
-    def get(self, slug):
-        row = Image.get_image_and_adblock(self.db, slug)[0]
-        image = row['image_url']
-        adblock = row['adblock']
-        verified = row['enabled']
-        title = row['title']
+    def get(self, slug, title=None):
 
-        use_secondary_ad = False
-        if verified == 1: # Check Adblock is accepted
-            if random.randint(0,1) == 1:
-                use_secondary_ad = True
+        post_items = Image.get_post(self.db, slug)
 
-        if image < 1:
-            self.redirect("/404")
+        print post_items
+        print len(post_items)
 
-        self.render("image.html", site_title=self.settings['site_title'],  title=title, image=image, ad=adblock, use_secondary_ad=use_secondary_ad)
+
+        if len(post_items) > 0:
+            print post_items[0]["title"]
+
+        #self.render("image.html", site_title=self.settings['site_title'],  title=title, image=image, ad=adblock, use_secondary_ad=use_secondary_ad)
+        self.render("post.html", site_title=self.settings['site_title'], post_items=post_items)
+
+
 
 
 class MainPageHandler(BaseHandler):
@@ -118,7 +117,9 @@ class CreatePostHandler(BaseHandler):
         #print user_id
         #print self.post_title
 
-        res = Image.set_post(self.db, self.post_title, user_id)
+        urlified_description = Image.string_to_readble_url_snippet(self.post_title)
+
+        res = Image.set_post(self.db, self.post_title, urlified_description, user_id)
 
         if res:
             self.redirect("/createpostitems/"+str(res))
@@ -180,13 +181,13 @@ class AddPostItemHandler(BaseHandler):
         urlified_description = Image.string_to_readble_url_snippet(description)
 
         print description
-        print urlified_description
 
         ## Insert the file details of the newly uploaded file
         ## into the database
+        print slug
         Image.set_post_item(self.db, slug, description, image_url)
 
-        self.redirect("/createpostitems/"+"1")
+        self.redirect("/createpostitems/"+slug)
 
 
 
@@ -415,7 +416,7 @@ class Application(tornado.web.Application):
             (r'/create_post', CreatePostHandler),
             (r'/createpostitems/([^/]+)', CreatePostItemsHandler),
             (r'/addpostitem/([^/]+)', AddPostItemHandler),
-            #(r'/([^/]+)', PicHandler),
+            (r'/([^/]+)/([^/]+)', PicHandler),
             #(r'/([a-z0-9]+)(?:/[0-9a-zA-Z_-]+|/)?', PicHandler),
             ] 
 

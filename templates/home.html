@@ -37,7 +37,7 @@
 
                     {% for post in posts %}
 
-                    <li><a href="#">{{ post.title }}</a></li>
+                    <li><a href="/{{ post.slug }}/{{ post.url_safe_title }}">{{ post.title }}</a></li>
 
                     {% end %}
 

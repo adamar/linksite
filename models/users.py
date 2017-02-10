@@ -65,7 +65,7 @@ class User(Model):
     @staticmethod
     def get_user_posts(db, user_id):
 
-        SQL = "select title from posts where user_id = {uid}".format(uid=user_id)
+        SQL = "select title, slug, url_safe_title from posts where user_id = {uid}".format(uid=user_id)
 
         res = db.query(SQL)
 
