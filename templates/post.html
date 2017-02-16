@@ -3,16 +3,32 @@
   {% include "header_simplex.html" %}
 
 
+  <div class="container container-table top-padded" >
 
+  <div class="row">
+ 
+       <div class="center-block col-md-4" style="float: none;">
+ 
   <h1 class="cover-heading">{{ post_items[0].title }}</h1>
 
+  </div>
+  </div>
+
+  <div class="row">
             {% for item in post_items %}
 
+       <div class="center-block col-md-4" style="float: none;">
+ 
                 <h3>{{ item.description }}</h3>
                 <img src="{{ item.image_url }}"></img>
 
+            </div>
 
-            {% end %}
+                {% end %}
+            </div>
+        </div>
+
+    </div>
 
   {% include "footer.html" %}
 
