@@ -422,7 +422,7 @@ class Application(tornado.web.Application):
 
 
         settings = dict(
-            site_title=u"pic",
+            site_title=u"exHype",
             cookie_secret="12oETzKXQAGaYdk9h2x9ff398g7np2XdTP1o/Vo=",
             login_url="/login",
             xsrf_cookies=False,
